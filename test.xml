@@ -1,0 +1,51 @@
+<extension name="Record a file" >
+    <condition field="destination_number" expression="^9999$">
+      <action application="answer"/>
+      <action application="sleep" data="1000"/>
+      <action application="say" data="en CURRENT_DATE pronounced
+                                      ${strepoch()}"/>
+      <action application="record"  data="/tmp/greeting.wav 20 200 3"/>
+      <action application="hangup"/>
+    </condition>
+  </extension>
+
+ <extension name="Play a file" >
+    <condition field="destination_number" expression="^9998$">
+      <action application="answer"/>
+      <action application="sleep" data="1000"/>
+      <action application="playback" data="/tmp/greeting.wav"/>
+      <action application="hangup"/>
+    </condition>
+  </extension>
+
+ <extension name="Play a file using lua" >
+    <condition field="destination_number" expression="^9997$">
+      <action application="lua" data="greeting.lua" />
+    </condition>
+  </extension>
+
+ <extension name="Play a file" >
+    <condition field="destination_number" expression="^9996$">
+      <action application="redirect" data="sip:9997@192.168.1.222:5080"/>
+    </condition>
+  </extension>
+ <extension name="Play a file" >
+    <condition field="destination_number" expression="^9995$">
+      <action application="answer"/>
+      <action application="sleep" data="1000"/>
+      <action application="playback" data="tone_stream://%(400,200,400,450);%(400,2200,400,450);loops=2"/>
+      <action application="say" data="en CURRENT_DATE pronounced ${strepoch()}"/>
+      <action application="deflect" data="sip:9997@192.168.1.222:5080"/>
+    </condition>
+  </extension>
+
+ <extension name="Play a file" >
+    <condition field="destination_number" expression="^9994$">
+      <action application="set" data="bypass_media=true"/>
+      <action application="socket" data="127.0.0.1:8084 async full"/>
+      <action application="answer"/>
+      <action application="playback" data="tone_stream://%(400,200,400,450);%(400,2200,400,450);loops=2"/>
+      <action application="bridge" data="sofia/gateway/gwlocal/9997"/>
+    </condition>
+  </extension>
+
